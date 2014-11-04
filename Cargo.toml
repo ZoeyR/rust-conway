@@ -1,0 +1,30 @@
+[package]
+
+name = "conway_sim"
+version = "0.0.1"
+authors = ["Daniel Griffen <daniel@dgriffen.com>"]
+
+
+[dependencies.graphics]
+
+git = "https://github.com/PistonDevelopers/graphics.git"
+
+[dependencies.sdl2_window]
+
+git = "https://github.com/PistonDevelopers/sdl2_window"
+
+[dependencies.shader_version]
+
+git = "https://github.com/PistonDevelopers/shader_version"
+
+[dependencies.opengl_graphics]
+
+git = "https://github.com/PistonDevelopers/opengl_graphics"
+
+[dependencies.event]
+
+git = "https://github.com/PistonDevelopers/event"
+
+[dependencies.gfx_graphics]
+
+git = "https://github.com/PistonDevelopers/gfx_graphics"
