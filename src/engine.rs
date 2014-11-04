@@ -7,15 +7,16 @@ use world;
 ///track interesting areas in the world. Only cells adjacent to cells that updated during the last
 ///generation are evaluated for a new state
 pub struct ConwayEngine {
-    generation
-    updated: DList<(cell::Cell, (int, int))>
+    generation: uint,
+    updated: DList<(cell::Cell, (int, int))>,
+    world: Box<world::World>
 }
 
 impl ConwayEngine {
 
     ///Create a new instance of the engine, this should be used
     ///on a world with an initial setup of cells.
-    pub fn new(world: &world::World) -> ConwayEngine {
+    pub fn new(world: Box<world::World>) -> ConwayEngine {
         let mut first_list = DList::new();
         for(location, cell) in world.cells.iter() {
             first_list.push((*cell, *location));
@@ -25,11 +26,11 @@ impl ConwayEngine {
             print!("[x:{}, y:{}] ", x, y);
         }
         println!("");
-        ConwayEngine { updated: first_list}
+        ConwayEngine { generation: 0, updated: first_list, world: world}
     }
 
     ///Calculate the next generation of cells
-    pub fn next_generation(&mut self, world: &mut world::World) {
+    pub fn next_generation(&mut self) {
         //new list of updates
         let mut new_list = DList::new();
 
@@ -51,8 +52,8 @@ impl ConwayEngine {
                     }
 
                     //get the new state
-                    let state = world.get_cell(x - i, y - j);
-                    let new_state = self.new_state((world.get_cell(x - i, y - j), (x - i, y - j)), world);
+                    let state = self.world.get_cell(x - i, y - j);
+                    let new_state = self.new_state((self.world.get_cell(x - i, y - j), (x - i, y - j)));
 
                     //if the cell changed, update the world and list
                     if state != new_state {
@@ -65,8 +66,8 @@ impl ConwayEngine {
         //update the world with new list
         for cell in new_list.iter() {
             match *cell {
-                (cell::Dead, (x, y)) => world.kill_cell(x, y),
-                (_, (x, y))         => world.set_cell(x, y)
+                (cell::Dead, (x, y)) => self.world.kill_cell(x, y),
+                (_, (x, y))         => self.world.set_cell(x, y)
             }
            /* if state == cell::Dead {
                 world.kill_cell(x, y);
@@ -77,8 +78,11 @@ impl ConwayEngine {
         self.updated = new_list;
     }
 
+    pub fn world_ref<'w>(&'w self) -> &'w world::World {
+        &*self.world
+    }
     
-    fn new_state(&self, cell: (cell::Cell, (int, int)), world: &world::World) -> cell::Cell {
+    fn new_state(&self, cell: (cell::Cell, (int, int))) -> cell::Cell {
         let (state, (x, y)) = cell;
 
         //count of sourrounding live cells
@@ -90,7 +94,7 @@ impl ConwayEngine {
                 if i == 0 && j == 0 {
                     continue;
                 }
-                if world.get_cell(x - i, y - j) == cell::Alive {
+                if self.world.get_cell(x - i, y - j) == cell::Alive {
                     count += 1;
                 }
             }

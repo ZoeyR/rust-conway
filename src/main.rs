@@ -50,21 +50,16 @@ fn main() {
     //__##_
     //___#_
     //__#__
-    /*world.set_cell(1, 0);
+    world.set_cell(1, 0);
     world.set_cell(2, 1);
     world.set_cell(0, 2);
     world.set_cell(1, 2);
-    world.set_cell(2, 2);*/
-    
-    world.set_cell(0,0);
-    world.set_cell(0,1);
-    world.set_cell(1,0);
-    //world.set_cell(1,1);
+    world.set_cell(2, 2);
 
-    let mut engine = engine::ConwayEngine::new(&world);
+    let mut engine = engine::ConwayEngine::new(box world);
     
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
+    engine.next_generation();
+    engine.next_generation();
     /*engine.next_generation(&mut world);
     engine.next_generation(&mut world);
     engine.next_generation(&mut world);
@@ -100,7 +95,7 @@ fn main() {
             g2d.draw(&mut renderer, &frame, |c, g| {
                 use graphics::*;
                 c.rgb(1.0, 1.0, 1.0).draw(g);
-                for (location, cell) in world.cells.iter() {
+                for (location, cell) in engine.world_ref().cells.iter() {
                     let (state, (x, y)) = (*cell, *location);
                     if state == cell::Alive {
                         c.rect(x as f64 * 10.0, y as f64 * 10.0, 10.0, 10.0).rgb(1.0, 0.0, 0.0).draw(g);
