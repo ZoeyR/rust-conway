@@ -1,4 +1,4 @@
-use std::collections::DList;
+use std::collections::HashMap;
 
 use cell;
 use world;
@@ -8,7 +8,7 @@ use world;
 ///generation are evaluated for a new state
 pub struct ConwayEngine {
     generation: uint,
-    updated: DList<(cell::Cell, (int, int))>,
+    updated: HashMap<(int, int), cell::State>,
     world: Box<world::World>
 }
 
@@ -17,31 +17,21 @@ impl ConwayEngine {
     ///Create a new instance of the engine, this should be used
     ///on a world with an initial setup of cells.
     pub fn new(world: Box<world::World>) -> ConwayEngine {
-        let mut first_list = DList::new();
+        let mut first_map = HashMap::new();
         for(location, cell) in world.cells.iter() {
-            first_list.push((*cell, *location));
+            first_map.insert(*location, *cell);
         }
-        for cell in first_list.iter() {
-            let (_, (x, y)) = *cell;
-            print!("[x:{}, y:{}] ", x, y);
-        }
-        println!("");
-        ConwayEngine { generation: 0, updated: first_list, world: world}
+        ConwayEngine { generation: 1, updated: first_map, world: world}
     }
 
     ///Calculate the next generation of cells
     pub fn next_generation(&mut self) {
         //new list of updates
-        let mut new_list = DList::new();
-
-        for cell in self.updated.iter() {
-            let (_, (x, y)) = *cell;
-            print!("[x:{}, y:{}] ", x, y);
-        }
-        println!("");
+        let mut new_map = HashMap::new();
+        let mut checked_map = HashMap::new();
         //loop through all the updated cells
-        for cell in self.updated.iter() {
-            let (_, (x, y)) = *cell;
+        for (location, state) in self.updated.iter() {
+            let (x, y) = *location;
             //check for new states on all adjacent cells
             for i in range(-1i, 2i) {
                 for j in range(-1i, 2i) {
@@ -50,39 +40,43 @@ impl ConwayEngine {
                     if i == 0 && j == 0 {
                         continue;
                     }
+                    
+                    //if this cell hasn't been checked already
+                    if checked_map.find(&(x - i, y - j)) == None {
+                        //get the current state
+                        let adj_state = self.world.get_cell(x - i, y - j);
+                        //get the new state for this cell
+                        let new_adj_state = self.new_state((self.world.get_cell(x - i, y - j), (x - i, y - j)));
 
-                    //get the new state
-                    let state = self.world.get_cell(x - i, y - j);
-                    let new_state = self.new_state((self.world.get_cell(x - i, y - j), (x - i, y - j)));
+                        //if the cell changed, update the world and list
+                        if adj_state != new_adj_state {
+                            new_map.insert((x - i, y - j), new_adj_state);
+                        }
 
-                    //if the cell changed, update the world and list
-                    if state != new_state {
-                        new_list.push((new_state, (x - i, y - j)));
+                        //add this cell to the checked map
+                        checked_map.insert((x - i, y - j), true);
                     }
                 }
             }
         }
 
         //update the world with new list
-        for cell in new_list.iter() {
-            match *cell {
-                (cell::Dead, (x, y)) => self.world.kill_cell(x, y),
-                (_, (x, y))         => self.world.set_cell(x, y)
+        for (location, cell) in new_map.iter() {
+            match (*location, *cell) {
+                ((x, y), cell::Dead)    => self.world.kill_cell(x, y),
+                ((x, y), _)             => self.world.set_cell(x, y)
             }
-           /* if state == cell::Dead {
-                world.kill_cell(x, y);
-            } else {
-                world.set_cell(x, y);
-            }*/
         }
-        self.updated = new_list;
+        self.updated = new_map;
     }
 
     pub fn world_ref<'w>(&'w self) -> &'w world::World {
         &*self.world
     }
     
-    fn new_state(&self, cell: (cell::Cell, (int, int))) -> cell::Cell {
+
+    //calculate the new cell state
+    fn new_state(&self, cell: (cell::State, (int, int))) -> cell::State {
         let (state, (x, y)) = cell;
 
         //count of sourrounding live cells

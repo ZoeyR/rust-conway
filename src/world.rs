@@ -4,7 +4,7 @@ use cell;
 
 //HashMap storing the world chunks
 pub struct World {
-    pub cells: HashMap<(int, int), cell::Cell>
+    pub cells: HashMap<(int, int), cell::State>
 }
 
 impl World {
@@ -14,7 +14,7 @@ impl World {
         World { cells: HashMap::new() }
     }
 
-    pub fn get_cell(&self, x: int, y: int) -> cell::Cell {
+    pub fn get_cell(&self, x: int, y: int) -> cell::State {
         match self.cells.find(&(x, y)) {
             Some(cell) => *cell,
             None => cell::Dead

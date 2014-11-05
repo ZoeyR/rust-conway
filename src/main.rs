@@ -83,8 +83,8 @@ fn main() {
     let frame = gfx::Frame::new(w as u16, h as u16);
     let mut renderer = device.create_renderer();
     let event_settings = EventSettings {
-        updates_per_second: 120,
-        max_frames_per_second: 60,
+        updates_per_second: 5,
+        max_frames_per_second: 240,
     };
     
     let mut g2d = G2D::new(&mut device);
@@ -102,9 +102,12 @@ fn main() {
                     }
                 }
             });
-            
             device.submit(renderer.as_buffer());
             renderer.reset();
+        });
+
+        e.update(|_| {
+            engine.next_generation();
         });
     }
     

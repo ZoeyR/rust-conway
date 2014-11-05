@@ -1,5 +1,5 @@
 #[deriving(PartialEq)]
-pub enum Cell {
+pub enum State {
     Alive,
     Dead
 }
