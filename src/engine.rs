@@ -30,7 +30,7 @@ impl ConwayEngine {
         let mut new_map = HashMap::new();
         let mut checked_map = HashMap::new();
         //loop through all the updated cells
-        for (location, state) in self.updated.iter() {
+        for (location, _) in self.updated.iter() {
             let (x, y) = *location;
             //check for new states on all adjacent cells
             for i in range(-1i, 2i) {
@@ -68,6 +68,7 @@ impl ConwayEngine {
             }
         }
         self.updated = new_map;
+        self.generation += 1;
     }
 
     pub fn world_ref<'w>(&'w self) -> &'w world::World {

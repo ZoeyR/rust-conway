@@ -20,7 +20,6 @@ use sdl2_window::Sdl2Window;
 use gfx::{Device, DeviceHelper};
 use gfx_graphics::{
 G2D,
-Texture,
 };
 
 pub mod cell;
@@ -42,14 +41,6 @@ fn main() {
 
     let mut world = world::World::new();
 
-    //__#__
-    //___#_
-    //_###_
-    //
-    //__#__
-    //__##_
-    //___#_
-    //__#__
     world.set_cell(1, 0);
     world.set_cell(2, 1);
     world.set_cell(0, 2);
@@ -58,24 +49,6 @@ fn main() {
 
     let mut engine = engine::ConwayEngine::new(box world);
     
-    engine.next_generation();
-    engine.next_generation();
-    /*engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);
-    engine.next_generation(&mut world);*/
     let mut device = gfx::GlDevice::new(|s| unsafe {
         std::mem::transmute(sdl2::video::gl_get_proc_address(s))
     });
@@ -111,25 +84,4 @@ fn main() {
         });
     }
     
-}
-
-fn printw(world: &world::World) {
-    let mut last_x = 0;
-    let mut last_y = 0;
-    for (location, cell) in world.cells.iter() {
-        let (state, (x, y)) = (*cell, *location);
-        if state == cell::Alive {
-            for i in range(last_x, x) {
-                    print!("_");
-            }
-            print!("#");
-            if y > last_y {
-                for i in range(last_y, y) {
-                    println!("");
-                }
-            }
-            last_x = x;
-            last_y = y;
-        }
-    }
 }

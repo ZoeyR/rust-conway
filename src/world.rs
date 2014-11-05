@@ -8,8 +8,6 @@ pub struct World {
 }
 
 impl World {
-    fn next(&self) {
-    }
     pub fn new() -> World {
         World { cells: HashMap::new() }
     }
