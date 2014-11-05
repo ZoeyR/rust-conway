@@ -1,6 +1,13 @@
+env:
+  global:
+    - secure: aJ42R+mN+0CU1hWnvjvi9H2DmEDZvVkwEnTZKBEb+mVfd8T890Og1c8DosmIPwEJxX83Zbj3To9jwILZyBJSStbPkLssXlv90NjzdVUzwpaOHXp0g2dhANaHwKNyvKWRXOEMIKzgQui+yc4spwGqs7BQjcFqZYr+b8fAss7n3uM=
+
 before_install:
         - sudo add-apt-repository ppa:zoogie/sdl2-snapshots -y
         - sudo apt-get -qq update
         - sudo apt-get -qq install libsdl2-dev
 
 language: rust
+
+after_script:
+  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
