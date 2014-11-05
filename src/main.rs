@@ -9,7 +9,7 @@ extern crate sdl2;
 extern crate gfx;
 extern crate gfx_graphics;
 use event::{
-    EventIterator,
+    Events,
     EventSettings,
     WindowSettings,
     Window,
@@ -22,6 +22,7 @@ use gfx_graphics::{
 G2D,
 };
 
+use std::cell::RefCell;
 pub mod cell;
 pub mod world;
 pub mod engine;
@@ -62,7 +63,7 @@ fn main() {
     
     let mut g2d = G2D::new(&mut device);
 
-    for e in EventIterator::new(&mut window, &event_settings) {
+    for e in Events::new(&RefCell::new(window), &event_settings) {
         use event::RenderEvent;
         e.render(|_| {
             g2d.draw(&mut renderer, &frame, |c, g| {

@@ -2,12 +2,12 @@
 name = "conway_sim"
 version = "0.0.1"
 dependencies = [
- "event 0.0.0 (git+https://github.com/pistondevelopers/event)",
+ "event 0.0.0 (git+https://github.com/PistonDevelopers/event)",
  "gfx_graphics 0.0.0 (git+https://github.com/PistonDevelopers/gfx_graphics)",
  "graphics 0.0.0 (git+https://github.com/PistonDevelopers/graphics.git)",
  "opengl_graphics 0.0.0 (git+https://github.com/PistonDevelopers/opengl_graphics)",
  "sdl2_window 0.0.0 (git+https://github.com/PistonDevelopers/sdl2_window)",
- "shader_version 0.0.0 (git+https://github.com/pistondevelopers/shader_version)",
+ "shader_version 0.0.0 (git+https://github.com/PistonDevelopers/shader_version)",
 ]
 
 [[package]]
@@ -21,9 +21,9 @@ dependencies = [
 [[package]]
 name = "event"
 version = "0.0.0"
-source = "git+https://github.com/pistondevelopers/event#9b308af5f0f16d312c423f35ac8f7e7adbc1e5e5"
+source = "git+https://github.com/PistonDevelopers/event#5cb1f6cef0cab35591fc077dd012d55b3ae9be5f"
 dependencies = [
- "input 0.0.0 (git+https://github.com/pistondevelopers/input)",
+ "input 0.0.0 (git+https://github.com/PistonDevelopers/input)",
 ]
 
 [[package]]
@@ -100,12 +100,12 @@ dependencies = [
 [[package]]
 name = "image"
 version = "0.1.0"
-source = "git+https://github.com/pistondevelopers/image#475682495f1a8626ecca217a1abd79c450528302"
+source = "git+https://github.com/pistondevelopers/image#b5b1c81474fed34206f6b27968c39cf1abb6c750"
 
 [[package]]
 name = "input"
 version = "0.0.0"
-source = "git+https://github.com/pistondevelopers/input#27bfb0e86d6f01c26098eab279ae3a07eaac909a"
+source = "git+https://github.com/PistonDevelopers/input#27bfb0e86d6f01c26098eab279ae3a07eaac909a"
 
 [[package]]
 name = "khronos_api"
@@ -120,7 +120,7 @@ dependencies = [
  "gl 0.0.1 (git+https://github.com/bjz/gl-rs)",
  "graphics 0.0.0 (git+https://github.com/PistonDevelopers/graphics.git)",
  "image 0.1.0 (git+https://github.com/pistondevelopers/image)",
- "shader_version 0.0.0 (git+https://github.com/pistondevelopers/shader_version)",
+ "shader_version 0.0.0 (git+https://github.com/PistonDevelopers/shader_version)",
  "texture 0.0.0 (git+https://github.com/PistonDevelopers/texture)",
 ]
 
@@ -135,7 +135,7 @@ dependencies = [
 [[package]]
 name = "rust-xml"
 version = "0.1.0"
-source = "git+https://github.com/netvl/rust-xml#9d81f0e559db940f9444298d601279708c5a5b0b"
+source = "git+https://github.com/netvl/rust-xml#7d867d8020e6ee845d198e012124c698738804a2"
 
 [[package]]
 name = "sdl2"
@@ -147,17 +147,17 @@ name = "sdl2_window"
 version = "0.0.0"
 source = "git+https://github.com/PistonDevelopers/sdl2_window#98aad0d980e4bd8ca62983d172552c8966722f83"
 dependencies = [
- "event 0.0.0 (git+https://github.com/pistondevelopers/event)",
+ "event 0.0.0 (git+https://github.com/PistonDevelopers/event)",
  "gl 0.0.1 (git+https://github.com/bjz/gl-rs)",
- "input 0.0.0 (git+https://github.com/pistondevelopers/input)",
+ "input 0.0.0 (git+https://github.com/PistonDevelopers/input)",
  "sdl2 0.0.1-alpha.1 (git+https://github.com/AngryLawyer/rust-sdl2)",
- "shader_version 0.0.0 (git+https://github.com/pistondevelopers/shader_version)",
+ "shader_version 0.0.0 (git+https://github.com/PistonDevelopers/shader_version)",
 ]
 
 [[package]]
 name = "shader_version"
 version = "0.0.0"
-source = "git+https://github.com/pistondevelopers/shader_version#03509f5d6dc3c1ccf64471615f438be25186e73a"
+source = "git+https://github.com/PistonDevelopers/shader_version#03509f5d6dc3c1ccf64471615f438be25186e73a"
 
 [[package]]
 name = "texture"
