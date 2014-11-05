@@ -1,4 +1,5 @@
 before_install:
+        - sudo add-apt-repository ppa:zoogie/sdl2-snapshots -y
         - sudo apt-get -qq update
         - sudo apt-get -qq install libsdl2-dev
 
