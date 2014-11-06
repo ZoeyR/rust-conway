@@ -1,6 +1,6 @@
 [package]
 
-name = "conway_sim"
+name = "rust-conway"
 version = "0.0.1"
 authors = ["Daniel Griffen <daniel@dgriffen.com>"]
 

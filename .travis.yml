@@ -9,5 +9,11 @@ before_install:
 
 language: rust
 
+
+script:
+        - cargo build -v
+        - cargo test -v
+        - cargo doc --no-deps -v
+
 after_script:
   - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
