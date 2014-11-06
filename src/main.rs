@@ -8,12 +8,12 @@ extern crate event;
 extern crate sdl2;
 extern crate gfx;
 extern crate gfx_graphics;
+extern crate input;
 use event::{
     Events,
     EventSettings,
     WindowSettings,
-    Window,
-    UpdateEvent
+    Window
 };
 
 use sdl2_window::Sdl2Window;
@@ -36,7 +36,7 @@ fn main() {
         opengl,
         WindowSettings {
             title: "Conway".to_string(),
-            size: [300, 300],
+            size: [600, 600],
             fullscreen: false,
             exit_on_esc: true,
             samples: 0
@@ -52,7 +52,7 @@ fn main() {
     world.set_cell(2, 2);
 
     let mut engine = engine::GrifLife::new(box world);
-    
+
     let mut device = gfx::GlDevice::new(|s| unsafe {
         std::mem::transmute(sdl2::video::gl_get_proc_address(s))
     });
@@ -60,14 +60,18 @@ fn main() {
     let frame = gfx::Frame::new(w as u16, h as u16);
     let mut renderer = device.create_renderer();
     let event_settings = EventSettings {
-        updates_per_second: 5,
+        updates_per_second: 120,
         max_frames_per_second: 240,
     };
     
     let mut g2d = G2D::new(&mut device);
 
+    let mut draw = false;
+    //number of generations per second, cannot exceed updates_per_second
+    let gen_speed = 50;
+    let mut updates_since_gen = 0;
     for e in Events::new(&RefCell::new(window), &event_settings) {
-        use event::RenderEvent;
+        use event::{ RenderEvent, MouseCursorEvent, PressEvent, ReleaseEvent, UpdateEvent};
         e.render(|_| {
             g2d.draw(&mut renderer, &frame, |c, g| {
                 use graphics::*;
@@ -83,9 +87,37 @@ fn main() {
             renderer.reset();
         });
 
-        e.update(|_| {
-            engine.next_generation();
+        e.press(|button| {
+            if button == input::Mouse(input::mouse::Left) {
+                draw = true;
+            }
         });
+
+        e.release(|button| {
+            if button == input::Mouse(input::mouse::Left) {
+                draw = false;
+            }
+        });
+        
+        e.update(|_| {
+            updates_since_gen += 1;
+            if updates_since_gen % (event_settings.updates_per_second / gen_speed) == 0 {
+                //make sure we are now drawing
+                if !draw {
+                    engine.next_generation();
+                }
+                updates_since_gen = 0;
+            }
+        });
+
+        if draw {
+            e.mouse_cursor(|x, y| {
+                let (x, y) = ((x as u32) / 10, (y as u32) / 10);
+                if x < w && y < h {
+                    engine.set_cell(x as int, y as int);
+                }
+            });
+        }
     }
     
 }

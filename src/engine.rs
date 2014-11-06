@@ -20,6 +20,12 @@ pub trait ConwayEngine {
     ///Return an immutable reference to the internally held world object. This is useful for
     ///getting access to the world so that It can be printed
     fn world_ref<'w>(&'w self) -> &'w world::World;
+
+    ///Return a mutable reference to the internally held world object.
+    fn world_ref_mut<'w>(&'w mut self) -> &'w mut world::World;
+
+    ///Correct way to set the cell in the engine so we can know about the addition
+    fn set_cell(&mut self, x: int, y: int);
 }
 
 
@@ -74,6 +80,15 @@ impl ConwayEngine for GrifLife {
 
     fn world_ref<'w>(&'w self) -> &'w world::World {
         &*self.world
+    }
+
+    fn world_ref_mut<'w>(&'w mut self) -> &'w mut world::World {
+        &mut *self.world
+    }
+
+    fn set_cell(&mut self, x: int, y: int) {
+        self.updated.insert((x, y), cell::Alive);
+        self.world.set_cell(x, y);
     }
 } 
 

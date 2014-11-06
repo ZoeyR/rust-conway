@@ -15,7 +15,10 @@ pub trait World {
 
     fn kill_cell(&mut self, x: int, y: int);
 
-    ///Returns a HashMap iterator of live cells
+    ///Returns a HashMap iterator of live cells.
+    ///This will stay in this format for the forseeable future.
+    ///Returning a generic iterator adds too much overhead to the
+    ///iter() function
     fn iter(&self) -> hash_map::Entries<(int, int), cell::State>;
 }
 
