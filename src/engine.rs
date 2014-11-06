@@ -6,26 +6,27 @@ use world;
 ///The main implementation of Conway's game of life. This engine utilizes a list of updates to
 ///track interesting areas in the world. Only cells adjacent to cells that updated during the last
 ///generation are evaluated for a new state
-pub struct ConwayEngine {
+pub struct GrifLife {
     generation: uint,
     updated: HashMap<(int, int), cell::State>,
-    world: Box<world::World>
+    world: Box<world::World + 'static>
 }
 
-impl ConwayEngine {
+pub trait ConwayEngine {
+    
+    ///Computes the next generation of cells, works on an internally held world::World object
+    fn next_generation(&mut self);
 
-    ///Create a new instance of the engine, this should be used
-    ///on a world with an initial setup of cells.
-    pub fn new(world: Box<world::World>) -> ConwayEngine {
-        let mut first_map = HashMap::new();
-        for(location, cell) in world.cells.iter() {
-            first_map.insert(*location, *cell);
-        }
-        ConwayEngine { generation: 1, updated: first_map, world: world}
-    }
+    ///Return an immutable reference to the internally held world object. This is useful for
+    ///getting access to the world so that It can be printed
+    fn world_ref<'w>(&'w self) -> &'w world::World;
+}
 
-    ///Calculate the next generation of cells
-    pub fn next_generation(&mut self) {
+
+
+impl ConwayEngine for GrifLife {
+
+    fn next_generation(&mut self) {
         //new list of updates
         let mut new_map = HashMap::new();
         let mut checked_map = HashMap::new();
@@ -71,10 +72,22 @@ impl ConwayEngine {
         self.generation += 1;
     }
 
-    pub fn world_ref<'w>(&'w self) -> &'w world::World {
+    fn world_ref<'w>(&'w self) -> &'w world::World {
         &*self.world
     }
-    
+} 
+
+impl GrifLife {
+
+    ///Create a new instance of the engine, this should be used
+    ///on a world with an initial setup of cells.
+    pub fn new(world: Box<world::World>) -> GrifLife {
+        let mut first_map = HashMap::new();
+        for(location, cell) in world.cells.iter() {
+            first_map.insert(*location, *cell);
+        }
+        GrifLife { generation: 1, updated: first_map, world: world}
+    }
 
     //calculate the new cell state
     fn new_state(&self, cell: (cell::State, (int, int))) -> cell::State {

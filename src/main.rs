@@ -22,6 +22,9 @@ use gfx_graphics::{
 G2D,
 };
 
+use engine::ConwayEngine;
+use world::World;
+
 use std::cell::RefCell;
 pub mod cell;
 pub mod world;
@@ -40,7 +43,7 @@ fn main() {
         }
     );
 
-    let mut world = world::World::new();
+    let mut world = world::HashWorld::new();
 
     world.set_cell(1, 0);
     world.set_cell(2, 1);
@@ -48,7 +51,7 @@ fn main() {
     world.set_cell(1, 2);
     world.set_cell(2, 2);
 
-    let mut engine = engine::ConwayEngine::new(box world);
+    let mut engine = engine::GrifLife::new(box world);
     
     let mut device = gfx::GlDevice::new(|s| unsafe {
         std::mem::transmute(sdl2::video::gl_get_proc_address(s))
