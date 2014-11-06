@@ -1,5 +1,5 @@
 [root]
-name = "conway_sim"
+name = "rust-conway"
 version = "0.0.1"
 dependencies = [
  "event 0.0.0 (git+https://github.com/PistonDevelopers/event)",

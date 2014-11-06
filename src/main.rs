@@ -32,7 +32,7 @@ pub mod engine;
 
 fn main() {
     let opengl = shader_version::opengl::OpenGL_3_2;
-    let mut window = Sdl2Window::new(
+    let window = Sdl2Window::new(
         opengl,
         WindowSettings {
             title: "Conway".to_string(),
@@ -72,7 +72,7 @@ fn main() {
             g2d.draw(&mut renderer, &frame, |c, g| {
                 use graphics::*;
                 c.rgb(1.0, 1.0, 1.0).draw(g);
-                for (location, cell) in engine.world_ref().cells.iter() {
+                for (location, cell) in engine.world_ref().iter() {
                     let (state, (x, y)) = (*cell, *location);
                     if state == cell::Alive {
                         c.rect(x as f64 * 10.0, y as f64 * 10.0, 10.0, 10.0).rgb(1.0, 0.0, 0.0).draw(g);

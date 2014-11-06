@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::collections::hash_map;
 use cell;
 
 
@@ -13,6 +14,9 @@ pub trait World {
     fn set_cell(&mut self, x: int, y: int);
 
     fn kill_cell(&mut self, x: int, y: int);
+
+    ///Returns a HashMap iterator of live cells
+    fn iter(&self) -> hash_map::Entries<(int, int), cell::State>;
 }
 
 impl HashWorld {
@@ -38,7 +42,7 @@ impl World for HashWorld {
         self.cells.remove(&(x, y));
     }
 
-    fn iter(&self) -> Entries<K, V> {
+    fn iter(&self) -> hash_map::Entries<(int, int), cell::State> {
         self.cells.iter()
     }
 }

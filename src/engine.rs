@@ -81,9 +81,9 @@ impl GrifLife {
 
     ///Create a new instance of the engine, this should be used
     ///on a world with an initial setup of cells.
-    pub fn new(world: Box<world::World>) -> GrifLife {
+    pub fn new(world: Box<world::World + 'static>) -> GrifLife {
         let mut first_map = HashMap::new();
-        for(location, cell) in world.cells.iter() {
+        for(location, cell) in world.iter() {
             first_map.insert(*location, *cell);
         }
         GrifLife { generation: 1, updated: first_map, world: world}
