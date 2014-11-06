@@ -42,11 +42,6 @@ impl ConwayEngine for GrifLife {
             //check for new states on all adjacent cells
             for i in range(-1i, 2i) {
                 for j in range(-1i, 2i) {
-
-                    //ignore the center cell
-                    if i == 0 && j == 0 {
-                        continue;
-                    }
                     
                     //if this cell hasn't been checked already
                     if checked_map.find(&(x - i, y - j)) == None {

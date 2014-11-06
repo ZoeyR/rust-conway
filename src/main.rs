@@ -67,6 +67,7 @@ fn main() {
     let mut g2d = G2D::new(&mut device);
 
     let mut draw = false;
+    let mut run = false;
     //number of generations per second, cannot exceed updates_per_second
     let gen_speed = 50;
     let mut updates_since_gen = 0;
@@ -79,7 +80,7 @@ fn main() {
                 for (location, cell) in engine.world_ref().iter() {
                     let (state, (x, y)) = (*cell, *location);
                     if state == cell::Alive {
-                        c.rect(x as f64 * 10.0, y as f64 * 10.0, 10.0, 10.0).rgb(1.0, 0.0, 0.0).draw(g);
+                        c.rect(x as f64 * 1.0, y as f64 * 1.0, 1.0, 1.0).rgb(1.0, 0.0, 0.0).draw(g);
                     }
                 }
             });
@@ -90,6 +91,9 @@ fn main() {
         e.press(|button| {
             if button == input::Mouse(input::mouse::Left) {
                 draw = true;
+            }
+            if button == input::Keyboard(input::keyboard::Space) {
+                run = !run;
             }
         });
 
@@ -103,7 +107,7 @@ fn main() {
             updates_since_gen += 1;
             if updates_since_gen % (event_settings.updates_per_second / gen_speed) == 0 {
                 //make sure we are now drawing
-                if !draw {
+                if !draw && run {
                     engine.next_generation();
                 }
                 updates_since_gen = 0;
@@ -112,7 +116,7 @@ fn main() {
 
         if draw {
             e.mouse_cursor(|x, y| {
-                let (x, y) = ((x as u32) / 10, (y as u32) / 10);
+                let (x, y) = ((x as u32) / 1, (y as u32) / 1);
                 if x < w && y < h {
                     engine.set_cell(x as int, y as int);
                 }
