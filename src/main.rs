@@ -9,12 +9,17 @@ extern crate sdl2;
 extern crate gfx;
 extern crate gfx_graphics;
 extern crate input;
+extern crate current;
+
 use event::{
     Events,
-    EventSettings,
+    Ups,
+    MaxFps,
     WindowSettings,
     Window
 };
+
+use current::Set;
 
 use sdl2_window::Sdl2Window;
 use gfx::{Device, DeviceHelper};
@@ -59,19 +64,15 @@ fn main() {
     let (w, h) = window.get_size();
     let frame = gfx::Frame::new(w as u16, h as u16);
     let mut renderer = device.create_renderer();
-    let event_settings = EventSettings {
-        updates_per_second: 120,
-        max_frames_per_second: 240,
-    };
     
     let mut g2d = G2D::new(&mut device);
 
     let mut draw = false;
     let mut run = false;
     //number of generations per second, cannot exceed updates_per_second
-    let gen_speed = 50;
-    let mut updates_since_gen = 0;
-    for e in Events::new(&RefCell::new(window), &event_settings) {
+    let gen_speed = 50i;
+    let mut updates_since_gen = 0i;
+    for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
         use event::{ RenderEvent, MouseCursorEvent, PressEvent, ReleaseEvent, UpdateEvent};
         e.render(|_| {
             g2d.draw(&mut renderer, &frame, |c, g| {
@@ -105,7 +106,7 @@ fn main() {
         
         e.update(|_| {
             updates_since_gen += 1;
-            if updates_since_gen % (event_settings.updates_per_second / gen_speed) == 0 {
+            if updates_since_gen % (120 / gen_speed) == 0 {
                 //make sure we are now drawing
                 if !draw && run {
                     engine.next_generation();
