@@ -75,6 +75,7 @@ fn main() {
 
     let mut offx = 0.0;
     let mut offy = 0.0;
+    let mut move_scr = false;
     for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
         use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, PressEvent, ReleaseEvent, UpdateEvent};
         e.render(|_| {
@@ -99,11 +100,17 @@ fn main() {
             if button == input::Keyboard(input::keyboard::Space) {
                 run = !run;
             }
+            if button == input::Mouse(input::mouse::Right) {
+                move_scr = true;
+            }
         });
 
         e.release(|button| {
             if button == input::Mouse(input::mouse::Left) {
                 draw = false;
+            }
+            if button == input::Mouse(input::mouse::Right) {
+                move_scr = false;
             }
         });
         
@@ -118,10 +125,12 @@ fn main() {
             }
         });
 
-        e.mouse_relative(|dx, dy| {
-            offx += dx;
-            offy += dy;
-        });
+        if move_scr {
+            e.mouse_relative(|dx, dy| {
+                offx += dx;
+                offy += dy;
+            });
+        }
 
         if draw {
             e.mouse_cursor(|x, y| {
