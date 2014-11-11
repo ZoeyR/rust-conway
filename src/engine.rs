@@ -44,7 +44,7 @@ impl ConwayEngine for GrifLife {
                 for j in range(-1i, 2i) {
                     
                     //if this cell hasn't been checked already
-                    if checked_map.find(&(x - i, y - j)) == None {
+                    if checked_map.get(&(x - i, y - j)) == None {
                         //get the current state
                         let adj_state = self.world.get_cell(x - i, y - j);
                         //get the new state for this cell

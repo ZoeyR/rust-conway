@@ -15,11 +15,12 @@ use event::{
     Events,
     Ups,
     MaxFps,
-    WindowSettings,
-    Window
+    WindowSettings
 };
 
-use current::Set;
+use event::window::Size;
+
+use current::{Set, Get};
 
 use sdl2_window::Sdl2Window;
 use gfx::{Device, DeviceHelper};
@@ -61,7 +62,9 @@ fn main() {
     let mut device = gfx::GlDevice::new(|s| unsafe {
         std::mem::transmute(sdl2::video::gl_get_proc_address(s))
     });
-    let (w, h) = (600, 600);
+    let Size([w,h]) = window.get();
+    //let w = size[0];
+    //let h = size[1];
     let frame = gfx::Frame::new(w as u16, h as u16);
     let mut renderer = device.create_renderer();
     

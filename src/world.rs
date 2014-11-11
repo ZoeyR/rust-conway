@@ -31,7 +31,7 @@ impl HashWorld {
 impl World for HashWorld {
 
     fn get_cell(&self, x: int, y: int) -> cell::State {
-        match self.cells.find(&(x, y)) {
+        match self.cells.get(&(x, y)) {
             Some(cell) => *cell,
             None => cell::Dead
         }
