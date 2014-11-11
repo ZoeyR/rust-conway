@@ -36,6 +36,12 @@ pub mod cell;
 pub mod world;
 pub mod engine;
 
+
+struct ViewPort {
+    offx: f64,
+    offy: f64,
+    scale: f64
+}
 fn main() {
     let opengl = shader_version::opengl::OpenGL_3_2;
     let window = Sdl2Window::new(
@@ -48,6 +54,7 @@ fn main() {
             samples: 0
         }
     );
+    let mut view = ViewPort {offx: 0.0, offy: 0.0, scale: 10.0};
 
     let mut world = world::HashWorld::new();
 
@@ -76,11 +83,9 @@ fn main() {
     let gen_speed = 50i;
     let mut updates_since_gen = 0i;
 
-    let mut offx = 0.0;
-    let mut offy = 0.0;
     let mut move_scr = false;
     for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
-        use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, PressEvent, ReleaseEvent, UpdateEvent};
+        use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, MouseScrollEvent, PressEvent, ReleaseEvent, UpdateEvent};
         e.render(|_| {
             g2d.draw(&mut renderer, &frame, |c, g| {
                 use graphics::*;
@@ -88,7 +93,7 @@ fn main() {
                 for (location, cell) in engine.world_ref().iter() {
                     let (state, (x, y)) = (*cell, *location);
                     if state == cell::Alive {
-                        c.rect(x as f64 * 10.0 - offx, y as f64 * 10.0 - offy, 10.0, 10.0).rgb(1.0, 0.0, 0.0).draw(g);
+                        c.rect(x as f64 * view.scale - view.offx, y as f64 * view.scale - view.offy, view.scale, view.scale).rgb(1.0, 0.0, 0.0).draw(g);
                     }
                 }
             });
@@ -128,16 +133,28 @@ fn main() {
             }
         });
 
+        e.mouse_scroll(|dx, dy| {
+            view.scale += dy;
+            println!("scroll {}, {}", dx, dy);
+        });
+
         if move_scr {
             e.mouse_relative(|dx, dy| {
-                offx += dx;
-                offy += dy;
+                view.offx += dx;
+                view.offy += dy;
+                println!("{},{}", view.offx, view.offy);
             });
         }
 
         if draw {
             e.mouse_cursor(|x, y| {
-                let (x, y) = ((x + offx) as int / 10, (y + offy) as int / 10);
+                let (mut x,mut y) = ((x + view.offx) / view.scale, (y + view.offy) / view.scale);
+                if x < 0.0 {
+                    x -= 1.0;
+                }
+                if y < 0.0 {
+                    y -= 1.0;
+                }
                 engine.set_cell(x as int, y as int);
             });
         }
