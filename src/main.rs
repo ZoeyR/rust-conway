@@ -61,7 +61,7 @@ fn main() {
     let mut device = gfx::GlDevice::new(|s| unsafe {
         std::mem::transmute(sdl2::video::gl_get_proc_address(s))
     });
-    let (w, h) = window.get_size();
+    let (w, h) = (600, 600);
     let frame = gfx::Frame::new(w as u16, h as u16);
     let mut renderer = device.create_renderer();
     
@@ -72,8 +72,11 @@ fn main() {
     //number of generations per second, cannot exceed updates_per_second
     let gen_speed = 50i;
     let mut updates_since_gen = 0i;
+
+    let mut offx = 0.0;
+    let mut offy = 0.0;
     for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
-        use event::{ RenderEvent, MouseCursorEvent, PressEvent, ReleaseEvent, UpdateEvent};
+        use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, PressEvent, ReleaseEvent, UpdateEvent};
         e.render(|_| {
             g2d.draw(&mut renderer, &frame, |c, g| {
                 use graphics::*;
@@ -81,7 +84,7 @@ fn main() {
                 for (location, cell) in engine.world_ref().iter() {
                     let (state, (x, y)) = (*cell, *location);
                     if state == cell::Alive {
-                        c.rect(x as f64 * 1.0, y as f64 * 1.0, 1.0, 1.0).rgb(1.0, 0.0, 0.0).draw(g);
+                        c.rect(x as f64 * 10.0 - offx, y as f64 * 10.0 - offy, 10.0, 10.0).rgb(1.0, 0.0, 0.0).draw(g);
                     }
                 }
             });
@@ -115,9 +118,14 @@ fn main() {
             }
         });
 
+        e.mouse_relative(|dx, dy| {
+            offx += dx;
+            offy += dy;
+        });
+
         if draw {
             e.mouse_cursor(|x, y| {
-                let (x, y) = ((x as u32) / 1, (y as u32) / 1);
+                let (x, y) = ((x as u32) / 10, (y as u32) / 10);
                 if x < w && y < h {
                     engine.set_cell(x as int, y as int);
                 }
