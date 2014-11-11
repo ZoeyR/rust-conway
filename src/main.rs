@@ -137,10 +137,8 @@ fn main() {
 
         if draw {
             e.mouse_cursor(|x, y| {
-                let (x, y) = ((x as u32) / 10, (y as u32) / 10);
-                if x < w && y < h {
-                    engine.set_cell(x as int, y as int);
-                }
+                let (x, y) = ((x + offx) as int / 10, (y + offy) as int / 10);
+                engine.set_cell(x as int, y as int);
             });
         }
     }
