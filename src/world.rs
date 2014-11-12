@@ -15,7 +15,20 @@ pub trait World {
 
     fn kill_cell(&mut self, x: int, y: int);
 
-    fn num_adjacent(&self, x: int, y: int) -> int;
+    fn num_adjacent(&self, x: int, y: int) -> int {
+        let mut count = 0i;
+        for i in range(-1i, 2i) {
+            for j in range(-1i, 2i) {
+                if i == 0 && j == 0 {
+                    continue;
+                }
+                if self.get_cell(x - i, y - j) == cell::Alive {
+                    count += 1;
+                }
+            }
+        }
+        count
+    }
 
     ///Returns a HashMap iterator of live cells.
     ///This will stay in this format for the forseeable future.
@@ -45,10 +58,6 @@ impl World for HashWorld {
 
     fn kill_cell(&mut self, x: int, y: int) {
         self.cells.remove(&(x, y));
-    }
-
-    fn num_adjacent(&self, x: int, y: int) -> int {
-        8
     }
 
     fn iter(&self) -> hash_map::Entries<(int, int), cell::State> {

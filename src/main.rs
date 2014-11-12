@@ -134,15 +134,17 @@ fn main() {
         });
 
         e.mouse_scroll(|dx, dy| {
-            view.scale += dy;
-            println!("scroll {}, {}", dx, dy);
+            view.scale = if view.scale + dy == 0.0 {
+                            view.scale
+                        } else {
+                            view.scale + dy
+                        };
         });
 
         if move_scr {
             e.mouse_relative(|dx, dy| {
                 view.offx += dx;
                 view.offy += dy;
-                println!("{},{}", view.offx, view.offy);
             });
         }
 
