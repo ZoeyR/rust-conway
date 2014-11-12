@@ -15,6 +15,8 @@ pub trait World {
 
     fn kill_cell(&mut self, x: int, y: int);
 
+    fn num_adjacent(&self, x: int, y: int) -> int;
+
     ///Returns a HashMap iterator of live cells.
     ///This will stay in this format for the forseeable future.
     ///Returning a generic iterator adds too much overhead to the
@@ -43,6 +45,10 @@ impl World for HashWorld {
 
     fn kill_cell(&mut self, x: int, y: int) {
         self.cells.remove(&(x, y));
+    }
+
+    fn num_adjacent(&self, x: int, y: int) -> int {
+        8
     }
 
     fn iter(&self) -> hash_map::Entries<(int, int), cell::State> {
