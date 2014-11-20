@@ -92,7 +92,7 @@ fn main() {
                 c.rgb(1.0, 1.0, 1.0).draw(g);
                 for (location, cell) in engine.world_ref().iter() {
                     let (state, (x, y)) = (*cell, *location);
-                    if state == cell::Alive {
+                    if state == cell::State::Alive {
                         c.rect(x as f64 * view.scale - view.offx, y as f64 * view.scale - view.offy, view.scale, view.scale).rgb(1.0, 0.0, 0.0).draw(g);
                     }
                 }

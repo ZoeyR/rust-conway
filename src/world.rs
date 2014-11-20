@@ -1,15 +1,15 @@
 use std::collections::HashMap;
 use std::collections::hash_map;
-use cell;
+use cell::State;
 
 
 //HashMap storing the world chunks
 pub struct HashWorld {
-    pub cells: HashMap<(int, int), cell::State>
+    pub cells: HashMap<(int, int), State>
 }
 
 pub trait World {
-    fn get_cell(&self, x: int, y: int) -> cell::State;
+    fn get_cell(&self, x: int, y: int) -> State;
 
     fn set_cell(&mut self, x: int, y: int);
 
@@ -22,7 +22,7 @@ pub trait World {
                 if i == 0 && j == 0 {
                     continue;
                 }
-                if self.get_cell(x - i, y - j) == cell::Alive {
+                if self.get_cell(x - i, y - j) == State::Alive {
                     count += 1;
                 }
             }
@@ -34,7 +34,7 @@ pub trait World {
     ///This will stay in this format for the forseeable future.
     ///Returning a generic iterator adds too much overhead to the
     ///iter() function
-    fn iter(&self) -> hash_map::Entries<(int, int), cell::State>;
+    fn iter(&self) -> hash_map::Entries<(int, int), State>;
 }
 
 impl HashWorld {
@@ -45,22 +45,22 @@ impl HashWorld {
 
 impl World for HashWorld {
 
-    fn get_cell(&self, x: int, y: int) -> cell::State {
+    fn get_cell(&self, x: int, y: int) -> State {
         match self.cells.get(&(x, y)) {
             Some(cell) => *cell,
-            None => cell::Dead
+            None => State::Dead
         }
     }
 
     fn set_cell(&mut self, x: int, y: int) {
-        self.cells.insert((x, y), cell::Alive);
+        self.cells.insert((x, y), State::Alive);
     }
 
     fn kill_cell(&mut self, x: int, y: int) {
         self.cells.remove(&(x, y));
     }
 
-    fn iter(&self) -> hash_map::Entries<(int, int), cell::State> {
+    fn iter(&self) -> hash_map::Entries<(int, int), State> {
         self.cells.iter()
     }
 }

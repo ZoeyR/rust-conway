@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use cell;
+use cell::State;
 use world;
 
 ///The main implementation of Conway's game of life. This engine utilizes a list of updates to
@@ -8,7 +8,7 @@ use world;
 ///generation are evaluated for a new state
 pub struct GrifLife {
     generation: uint,
-    updated: HashMap<(int, int), cell::State>,
+    updated: HashMap<(int, int), State>,
     world: Box<world::World + 'static>
 }
 
@@ -65,7 +65,7 @@ impl ConwayEngine for GrifLife {
         //update the world with new list
         for (location, cell) in new_map.iter() {
             match (*location, *cell) {
-                ((x, y), cell::Dead)    => self.world.kill_cell(x, y),
+                ((x, y), State::Dead)    => self.world.kill_cell(x, y),
                 ((x, y), _)             => self.world.set_cell(x, y)
             }
         }
@@ -82,7 +82,7 @@ impl ConwayEngine for GrifLife {
     }
 
     fn set_cell(&mut self, x: int, y: int) {
-        self.updated.insert((x, y), cell::Alive);
+        self.updated.insert((x, y), State::Alive);
         self.world.set_cell(x, y);
     }
 } 
@@ -100,7 +100,7 @@ impl GrifLife {
     }
 
     //calculate the new cell state
-    fn new_state(&self, cell: (cell::State, (int, int))) -> cell::State {
+    fn new_state(&self, cell: (State, (int, int))) -> State {
         let (state, (x, y)) = cell;
 
         //count of sourrounding live cells
@@ -112,7 +112,7 @@ impl GrifLife {
                 if i == 0 && j == 0 {
                     continue;
                 }
-                if self.world.get_cell(x - i, y - j) == cell::Alive {
+                if self.world.get_cell(x - i, y - j) == State::Alive {
                     count += 1;
                 }
             }
@@ -120,11 +120,11 @@ impl GrifLife {
 
         //apply conways rules
         if count == 3 {
-            return cell::Alive;
+            return State::Alive;
         }
-        if count == 2 && state == cell::Alive {
-            return cell::Alive;
+        if count == 2 && state == State::Alive {
+            return State::Alive;
         }
-        cell::Dead
+        State::Dead
     }
 }
