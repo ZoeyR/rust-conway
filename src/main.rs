@@ -23,10 +23,7 @@ use event::window::Size;
 use current::{Set, Get};
 
 use sdl2_window::Sdl2Window;
-use gfx::{Device, DeviceHelper};
-use gfx_graphics::{
-G2D,
-};
+use opengl_graphics::Gl;
 
 use engine::ConwayEngine;
 use world::World;
@@ -54,6 +51,8 @@ fn main() {
             samples: 0
         }
     );
+
+    let ref mut gl = Gl::new(opengl);
     let mut view = ViewPort {offx: 0.0, offy: 0.0, scale: 10.0};
 
     let mut world = world::HashWorld::new();
@@ -66,17 +65,6 @@ fn main() {
 
     let mut engine = engine::GrifLife::new(box world);
 
-    let mut device = gfx::GlDevice::new(|s| unsafe {
-        std::mem::transmute(sdl2::video::gl_get_proc_address(s))
-    });
-    let Size([w,h]) = window.get();
-    //let w = size[0];
-    //let h = size[1];
-    let frame = gfx::Frame::new(w as u16, h as u16);
-    let mut renderer = device.create_renderer();
-    
-    let mut g2d = G2D::new(&mut device);
-
     let mut draw = false;
     let mut run = false;
     //number of generations per second, cannot exceed updates_per_second
@@ -86,19 +74,20 @@ fn main() {
     let mut move_scr = false;
     for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
         use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, MouseScrollEvent, PressEvent, ReleaseEvent, UpdateEvent};
-        e.render(|_| {
-            g2d.draw(&mut renderer, &frame, |c, g| {
-                use graphics::*;
-                c.rgb(1.0, 1.0, 1.0).draw(g);
-                for (location, cell) in engine.world_ref().iter() {
-                    let (state, (x, y)) = (*cell, *location);
-                    if state == cell::State::Alive {
-                        c.rect(x as f64 * view.scale - view.offx, y as f64 * view.scale - view.offy, view.scale, view.scale).rgb(1.0, 0.0, 0.0).draw(g);
-                    }
+        e.render(|args| {
+            use graphics::*;
+
+            gl.viewport(0, 0, args.width as i32, args.height as i32);
+
+            let c = Context::abs(args.width as f64, args.height as f64);
+            c.rgb(1.0, 1.0, 1.0).draw(gl);
+
+            for (location, cell) in engine.world_ref().iter() {
+                let (state, (x, y)) = (*cell, *location);
+                if state == cell::State::Alive {
+                    c.rect(x as f64 * view.scale - view.offx, y as f64 * view.scale - view.offy, view.scale, view.scale).rgb(1.0, 0.0, 0.0).draw(gl);
                 }
-            });
-            device.submit(renderer.as_buffer());
-            renderer.reset();
+            }
         });
 
         e.press(|button| {

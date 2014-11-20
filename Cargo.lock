@@ -18,7 +18,7 @@ source = "git+https://github.com/PistonDevelopers/current#281637a9f018f41ed44a15
 [[package]]
 name = "device"
 version = "0.1.0"
-source = "git+https://github.com/gfx-rs/gfx-rs#6ea9c69a61edd85fb64071dca6f89a7745d29a8d"
+source = "git+https://github.com/gfx-rs/gfx-rs#8d33b65f7a472d31bbb4ef7abce4137c3909d8bd"
 dependencies = [
  "gfx_gl 0.1.0 (git+https://github.com/gfx-rs/gfx_gl.git)",
 ]
@@ -26,22 +26,21 @@ dependencies = [
 [[package]]
 name = "event"
 version = "0.0.0"
-source = "git+https://github.com/PistonDevelopers/event#4d0bd4a9dbdbfb4df7f557213d5face4c4175d5d"
+source = "git+https://github.com/PistonDevelopers/event#1e53b9ec7751c05760091aea0eddfbf7d0e39aba"
 dependencies = [
  "current 0.0.0 (git+https://github.com/PistonDevelopers/current)",
  "event_loop 0.0.0 (git+https://github.com/PistonDevelopers/event_loop)",
  "input 0.0.0 (git+https://github.com/PistonDevelopers/input)",
- "time 0.0.2 (git+http://github.com/rust-lang/time)",
  "window 0.0.0 (git+https://github.com/PistonDevelopers/window)",
 ]
 
 [[package]]
 name = "event_loop"
 version = "0.0.0"
-source = "git+https://github.com/PistonDevelopers/event_loop#3d79482c112cf27c7b94e4215808e21759761d4f"
+source = "git+https://github.com/PistonDevelopers/event_loop#8ed50afd9876bf10a2228ef6485bd6c837dd9a12"
 dependencies = [
  "current 0.0.0 (git+https://github.com/PistonDevelopers/current)",
- "time 0.0.2 (git+http://github.com/rust-lang/time)",
+ "time 0.0.2 (git+https://github.com/pistondevelopers/time)",
 ]
 
 [[package]]
@@ -52,7 +51,7 @@ source = "git+https://github.com/alexcrichton/gcc-rs#f25b3ba9c40303781189cc137fb
 [[package]]
 name = "gfx"
 version = "0.1.0"
-source = "git+https://github.com/gfx-rs/gfx-rs#6ea9c69a61edd85fb64071dca6f89a7745d29a8d"
+source = "git+https://github.com/gfx-rs/gfx-rs#8d33b65f7a472d31bbb4ef7abce4137c3909d8bd"
 dependencies = [
  "device 0.1.0 (git+https://github.com/gfx-rs/gfx-rs)",
  "gfx_macros 0.1.0 (git+https://github.com/gfx-rs/gfx-rs)",
@@ -64,13 +63,13 @@ name = "gfx_gl"
 version = "0.1.0"
 source = "git+https://github.com/gfx-rs/gfx_gl.git#ed681503da2e7ed9343003e78af4767e8e4e33a8"
 dependencies = [
- "gl_generator 0.0.1 (git+https://github.com/bjz/gl-rs.git)",
+ "gl_generator 0.0.1 (git+https://github.com/bjz/gl-rs)",
 ]
 
 [[package]]
 name = "gfx_graphics"
 version = "0.0.0"
-source = "git+https://github.com/PistonDevelopers/gfx_graphics#e74f7fe413ecc77450914b472e20d99738dff09b"
+source = "git+https://github.com/PistonDevelopers/gfx_graphics#3f5cbe5785ab7458f6da75b8a68ea631a9902ef2"
 dependencies = [
  "gfx 0.1.0 (git+https://github.com/gfx-rs/gfx-rs)",
  "gfx_macros 0.1.0 (git+https://github.com/gfx-rs/gfx-rs)",
@@ -82,7 +81,7 @@ dependencies = [
 [[package]]
 name = "gfx_macros"
 version = "0.1.0"
-source = "git+https://github.com/gfx-rs/gfx-rs#6ea9c69a61edd85fb64071dca6f89a7745d29a8d"
+source = "git+https://github.com/gfx-rs/gfx-rs#8d33b65f7a472d31bbb4ef7abce4137c3909d8bd"
 
 [[package]]
 name = "gfx_texture"
@@ -91,29 +90,29 @@ source = "git+https://github.com/pistondevelopers/gfx_texture#504a58b3a28ed99bed
 dependencies = [
  "gfx 0.1.0 (git+https://github.com/gfx-rs/gfx-rs)",
  "image 0.1.0 (git+https://github.com/pistondevelopers/image)",
- "texture 0.0.0 (git+https://github.com/PistonDevelopers/texture)",
+ "texture 0.0.0 (git+https://github.com/pistondevelopers/texture)",
 ]
 
 [[package]]
 name = "gl"
 version = "0.0.1"
-source = "git+https://github.com/bjz/gl-rs.git#d9e63fcb0cb0a2fd97a815bee612a96b394afbb0"
+source = "git+https://github.com/bjz/gl-rs#75a3f4ab29798545279e3041ab8ea97a83446335"
 dependencies = [
- "gl_generator 0.0.1 (git+https://github.com/bjz/gl-rs.git)",
+ "gl_generator 0.0.1 (git+https://github.com/bjz/gl-rs)",
 ]
 
 [[package]]
 name = "gl_common"
 version = "0.0.1"
-source = "git+https://github.com/bjz/gl-rs.git#d9e63fcb0cb0a2fd97a815bee612a96b394afbb0"
+source = "git+https://github.com/bjz/gl-rs#75a3f4ab29798545279e3041ab8ea97a83446335"
 
 [[package]]
 name = "gl_generator"
 version = "0.0.1"
-source = "git+https://github.com/bjz/gl-rs.git#d9e63fcb0cb0a2fd97a815bee612a96b394afbb0"
+source = "git+https://github.com/bjz/gl-rs#75a3f4ab29798545279e3041ab8ea97a83446335"
 dependencies = [
- "gl_common 0.0.1 (git+https://github.com/bjz/gl-rs.git)",
- "khronos_api 0.0.2 (git+https://github.com/bjz/gl-rs.git)",
+ "gl_common 0.0.1 (git+https://github.com/bjz/gl-rs)",
+ "khronos_api 0.0.2 (git+https://github.com/bjz/gl-rs)",
  "rust-xml 0.1.0 (git+https://github.com/netvl/rust-xml)",
 ]
 
@@ -122,14 +121,14 @@ name = "graphics"
 version = "0.0.0"
 source = "git+https://github.com/PistonDevelopers/graphics.git#ec0f7d35a92f29de58cdb5a9e66d96cd6b0170a8"
 dependencies = [
- "texture 0.0.0 (git+https://github.com/PistonDevelopers/texture)",
+ "texture 0.0.0 (git+https://github.com/pistondevelopers/texture)",
  "vecmath 0.0.0 (git+https://github.com/PistonDevelopers/vecmath)",
 ]
 
 [[package]]
 name = "image"
 version = "0.1.0"
-source = "git+https://github.com/pistondevelopers/image#935b4d3035a106243472ddc2899d066d6d9f65be"
+source = "git+https://github.com/pistondevelopers/image#a869d792215bbcf645267df32e7890f2fa5999ab"
 
 [[package]]
 name = "input"
@@ -139,24 +138,24 @@ source = "git+https://github.com/PistonDevelopers/input#fb351501f522c8ee0d88954d
 [[package]]
 name = "khronos_api"
 version = "0.0.2"
-source = "git+https://github.com/bjz/gl-rs.git#d9e63fcb0cb0a2fd97a815bee612a96b394afbb0"
+source = "git+https://github.com/bjz/gl-rs#75a3f4ab29798545279e3041ab8ea97a83446335"
 
 [[package]]
 name = "opengl_graphics"
 version = "0.0.0"
 source = "git+https://github.com/PistonDevelopers/opengl_graphics#944933e3e857ec004a07639ef5bdf6a62b9e3dc7"
 dependencies = [
- "gl 0.0.1 (git+https://github.com/bjz/gl-rs.git)",
+ "gl 0.0.1 (git+https://github.com/bjz/gl-rs)",
  "graphics 0.0.0 (git+https://github.com/PistonDevelopers/graphics.git)",
  "image 0.1.0 (git+https://github.com/pistondevelopers/image)",
  "shader_version 0.0.0 (git+https://github.com/PistonDevelopers/shader_version)",
- "texture 0.0.0 (git+https://github.com/PistonDevelopers/texture)",
+ "texture 0.0.0 (git+https://github.com/pistondevelopers/texture)",
 ]
 
 [[package]]
 name = "render"
 version = "0.1.0"
-source = "git+https://github.com/gfx-rs/gfx-rs#6ea9c69a61edd85fb64071dca6f89a7745d29a8d"
+source = "git+https://github.com/gfx-rs/gfx-rs#8d33b65f7a472d31bbb4ef7abce4137c3909d8bd"
 dependencies = [
  "device 0.1.0 (git+https://github.com/gfx-rs/gfx-rs)",
 ]
@@ -169,14 +168,14 @@ source = "git+https://github.com/netvl/rust-xml#8feef8eab34cc1a9431870be3b2eccf0
 [[package]]
 name = "sdl2"
 version = "0.0.1-alpha.1"
-source = "git+https://github.com/AngryLawyer/rust-sdl2#1553901acb9593badde4b7446afc6df1c5696404"
+source = "git+https://github.com/AngryLawyer/rust-sdl2#02c3bdde9d3fbed0368bf6d7b8f888332ba76dce"
 
 [[package]]
 name = "sdl2_window"
 version = "0.0.0"
-source = "git+https://github.com/PistonDevelopers/sdl2_window#16a1eb2e6d14b57f510c048a7ef9d21c4deb07a3"
+source = "git+https://github.com/PistonDevelopers/sdl2_window#3be095601b114310e0a471d491c8d3237b426812"
 dependencies = [
- "gl 0.0.1 (git+https://github.com/bjz/gl-rs.git)",
+ "gl 0.0.1 (git+https://github.com/bjz/gl-rs)",
  "input 0.0.0 (git+https://github.com/PistonDevelopers/input)",
  "sdl2 0.0.1-alpha.1 (git+https://github.com/AngryLawyer/rust-sdl2)",
  "shader_version 0.0.0 (git+https://github.com/PistonDevelopers/shader_version)",
@@ -191,12 +190,12 @@ source = "git+https://github.com/PistonDevelopers/shader_version#32364088516495b
 [[package]]
 name = "texture"
 version = "0.0.0"
-source = "git+https://github.com/PistonDevelopers/texture#0dd5a5f2029b4a56a02f8e528087b93496c6ac52"
+source = "git+https://github.com/pistondevelopers/texture#0dd5a5f2029b4a56a02f8e528087b93496c6ac52"
 
 [[package]]
 name = "time"
 version = "0.0.2"
-source = "git+http://github.com/rust-lang/time#b58210c93a44d7b83a1a9b68b462f5a7fa1942f3"
+source = "git+https://github.com/pistondevelopers/time#7cd171bca31b83fcdcece6b8c62490f293e1003d"
 dependencies = [
  "gcc 0.0.1 (git+https://github.com/alexcrichton/gcc-rs)",
 ]
