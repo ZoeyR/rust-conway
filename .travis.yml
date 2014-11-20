@@ -1,6 +1,6 @@
 env:
   global:
-    - secure: aJ42R+mN+0CU1hWnvjvi9H2DmEDZvVkwEnTZKBEb+mVfd8T890Og1c8DosmIPwEJxX83Zbj3To9jwILZyBJSStbPkLssXlv90NjzdVUzwpaOHXp0g2dhANaHwKNyvKWRXOEMIKzgQui+yc4spwGqs7BQjcFqZYr+b8fAss7n3uM=
+    - secure: Y+qYl7ybDwWwHHZQ1T8loczK592NDPUBi2CBeWgWpxZDMsRYTggGBuy14ykCmjVb2tgzR2q7QU7oDeBmeqsfcvLmPf4W3kE0j+lm+I8vwP5DrMwYA2UVLuPgqkE21ttaarqzOXQNFuhnHGgkZvGV2Vc6B4vQ/oXBY9VWjd9Ztqs=
 
 before_install:
         - sudo add-apt-repository ppa:zoogie/sdl2-snapshots -y
@@ -16,5 +16,7 @@ script:
         - cargo test -v
         - cargo doc --no-deps -v
 
-after_script:
-  - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh
+after_success: 
+        - cp -R target/doc doc 
+        - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh 
+        - rm -r doc 
