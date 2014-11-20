@@ -133,7 +133,7 @@ fn main() {
             }
         });
 
-        e.mouse_scroll(|dx, dy| {
+        e.mouse_scroll(|_, dy| {
             view.scale = if view.scale + dy == 0.0 {
                             view.scale
                         } else {
