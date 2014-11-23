@@ -6,23 +6,23 @@ use world;
 ///The main implementation of Conway's game of life. This engine utilizes a list of updates to
 ///track interesting areas in the world. Only cells adjacent to cells that updated during the last
 ///generation are evaluated for a new state
-pub struct GrifLife {
+pub struct GrifLife<T: world::World> {
     generation: uint,
     updated: HashMap<(int, int), State>,
-    world: Box<world::World + 'static>
+    world: T
 }
 
-pub trait ConwayEngine {
+pub trait ConwayEngine<T: world::World> {
     
     ///Computes the next generation of cells, works on an internally held world::World object
     fn next_generation(&mut self);
 
     ///Return an immutable reference to the internally held world object. This is useful for
     ///getting access to the world so that It can be printed
-    fn world_ref<'w>(&'w self) -> &'w world::World;
+    fn world_ref<'w>(&'w self) -> &'w T;
 
     ///Return a mutable reference to the internally held world object.
-    fn world_ref_mut<'w>(&'w mut self) -> &'w mut world::World;
+    fn world_ref_mut<'w>(&'w mut self) -> &'w mut T;
 
     ///Correct way to set the cell in the engine so we can know about the addition
     fn set_cell(&mut self, x: int, y: int);
@@ -30,7 +30,7 @@ pub trait ConwayEngine {
 
 
 
-impl ConwayEngine for GrifLife {
+impl<T: world::World>ConwayEngine<T> for GrifLife<T> {
 
     fn next_generation(&mut self) {
         //new list of updates
@@ -73,12 +73,12 @@ impl ConwayEngine for GrifLife {
         self.generation += 1;
     }
 
-    fn world_ref<'w>(&'w self) -> &'w world::World {
-        &*self.world
+    fn world_ref<'w>(&'w self) -> &'w T {
+        &self.world
     }
 
-    fn world_ref_mut<'w>(&'w mut self) -> &'w mut world::World {
-        &mut *self.world
+    fn world_ref_mut<'w>(&'w mut self) -> &'w mut T {
+        &mut self.world
     }
 
     fn set_cell(&mut self, x: int, y: int) {
@@ -87,11 +87,11 @@ impl ConwayEngine for GrifLife {
     }
 } 
 
-impl GrifLife {
+impl<T: world::World> GrifLife<T> {
 
     ///Create a new instance of the engine, this should be used
     ///on a world with an initial setup of cells.
-    pub fn new(world: Box<world::World + 'static>) -> GrifLife {
+    pub fn new(world: T) -> GrifLife<T> {
         let mut first_map = HashMap::new();
         for(location, cell) in world.iter() {
             first_map.insert(*location, *cell);

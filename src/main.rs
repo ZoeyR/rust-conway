@@ -63,7 +63,7 @@ fn main() {
     world.set_cell(1, 2);
     world.set_cell(2, 2);
 
-    let mut engine = engine::GrifLife::new(box world);
+    let mut engine = engine::GrifLife::new(world);
 
     let mut draw = false;
     let mut run = false;
