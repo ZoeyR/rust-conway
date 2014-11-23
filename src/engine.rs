@@ -103,22 +103,10 @@ impl GrifLife {
     fn new_state(&self, cell: (State, (int, int))) -> State {
         let (state, (x, y)) = cell;
 
-        //count of sourrounding live cells
-        let mut count = 0i;
-
         //count the surrounding cells
-        for i in range(-1i, 2i) {
-            for j in range(-1i, 2i) {
-                if i == 0 && j == 0 {
-                    continue;
-                }
-                if self.world.get_cell(x - i, y - j) == State::Alive {
-                    count += 1;
-                }
-            }
-        }
+        let count = self.world.num_adjacent(x, y);
 
-        //apply conways rules
+        //apply conway's rules
         if count == 3 {
             return State::Alive;
         }
