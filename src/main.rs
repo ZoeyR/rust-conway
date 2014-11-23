@@ -1,4 +1,4 @@
-#![feature(globs, associated_types)]
+#![feature(globs)]
 
 extern crate graphics;
 extern crate sdl2_window;
@@ -18,13 +18,17 @@ use event::{
     WindowSettings
 };
 
-use current::Set;
+use event::window::Size;
+
+use current::{Set, Get};
+
 use sdl2_window::Sdl2Window;
 use opengl_graphics::Gl;
+
 use engine::ConwayEngine;
 use world::World;
-use std::cell::RefCell;
 
+use std::cell::RefCell;
 pub mod cell;
 pub mod world;
 pub mod engine;
