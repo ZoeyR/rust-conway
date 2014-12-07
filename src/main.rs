@@ -35,7 +35,7 @@ struct ViewPort {
     scale: f64
 }
 fn main() {
-    let opengl = shader_version::opengl::OpenGL_3_2;
+    let opengl = shader_version::opengl::OpenGL::OpenGL_3_2;
     let window = Sdl2Window::new(
         opengl,
         WindowSettings {
@@ -70,38 +70,34 @@ fn main() {
     for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
         use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, MouseScrollEvent, PressEvent, ReleaseEvent, UpdateEvent};
         e.render(|args| {
-            use graphics::*;
+            gl.draw([0, 0, args.width as i32, args.height as i32], |c, gl| {
 
-            gl.viewport(0, 0, args.width as i32, args.height as i32);
-
-            let c = Context::abs(args.width as f64, args.height as f64);
-            c.rgb(1.0, 1.0, 1.0).draw(gl);
-
-            for (location, cell) in engine.world_ref().iter() {
-                let (state, (x, y)) = (*cell, *location);
-                if state == cell::State::Alive {
-                    c.rect(x as f64 * view.scale - view.offx, y as f64 * view.scale - view.offy, view.scale, view.scale).rgb(1.0, 0.0, 0.0).draw(gl);
+                for (location, cell) in engine.world_ref().iter() {
+                    let (state, (x, y)) = (*cell, *location);
+                    if state == cell::State::Alive {
+                        graphics::Rectangle::new([1.0, 0.0, 0.0, 1.0]).draw([x as f64 * view.scale - view.offx, y as f64 * view.scale - view.offy, view.scale, view.scale], &c, gl);
+                    }
                 }
-            }
+            });
         });
 
         e.press(|button| {
-            if button == input::Mouse(input::mouse::Left) {
+            if button == input::Button::Mouse(input::mouse::Button::Left) {
                 draw = true;
             }
-            if button == input::Keyboard(input::keyboard::Space) {
+            if button == input::Button::Keyboard(input::keyboard::Key::Space) {
                 run = !run;
             }
-            if button == input::Mouse(input::mouse::Right) {
+            if button == input::Button::Mouse(input::mouse::Button::Right) {
                 move_scr = true;
             }
         });
 
         e.release(|button| {
-            if button == input::Mouse(input::mouse::Left) {
+            if button == input::Button::Mouse(input::mouse::Button::Left) {
                 draw = false;
             }
-            if button == input::Mouse(input::mouse::Right) {
+            if button == input::Button::Mouse(input::mouse::Button::Right) {
                 move_scr = false;
             }
         });
