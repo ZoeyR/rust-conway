@@ -17,6 +17,12 @@ script:
         - cargo doc --no-deps -v
 
 after_success: 
-        - cp -R target/doc doc 
-        - curl http://www.rust-ci.org/artifacts/put?t=$RUSTCI_TOKEN | sh 
-        - rm -r doc 
+        - cd target/doc
+	- git init
+	- git config user.name "Daniel Griffen"
+	- git config user.email "daniel@dgriffen.com"
+	- git remote add origin "https://$GH_TOKEN@github.com/dgriffen/rust-conway"
+	- git checkout -b gh-pages
+	- git add -A
+	- git commit -m 'new docs'
+	- git push -fq origin gh-pages
