@@ -6,8 +6,8 @@ extern crate shader_version;
 extern crate opengl_graphics;
 extern crate event;
 extern crate sdl2;
-extern crate gfx;
-extern crate gfx_graphics;
+
+
 extern crate input;
 extern crate current;
 
@@ -35,7 +35,7 @@ struct ViewPort {
     scale: f64
 }
 fn main() {
-    let opengl = shader_version::opengl::OpenGL::OpenGL_3_2;
+    let opengl = shader_version::opengl::OpenGL::_3_2;
     let window = Sdl2Window::new(
         opengl,
         WindowSettings {
@@ -83,22 +83,22 @@ fn main() {
         });
 
         e.press(|button| {
-            if button == input::Button::Mouse(input::mouse::Button::Left) {
+            if button == input::Button::Mouse(input::mouse::MouseButton::Left) {
                 draw = true;
             }
             if button == input::Button::Keyboard(input::keyboard::Key::Space) {
                 run = !run;
             }
-            if button == input::Button::Mouse(input::mouse::Button::Right) {
+            if button == input::Button::Mouse(input::mouse::MouseButton::Right) {
                 move_scr = true;
             }
         });
 
         e.release(|button| {
-            if button == input::Button::Mouse(input::mouse::Button::Left) {
+            if button == input::Button::Mouse(input::mouse::MouseButton::Left) {
                 draw = false;
             }
-            if button == input::Button::Mouse(input::mouse::Button::Right) {
+            if button == input::Button::Mouse(input::mouse::MouseButton::Right) {
                 move_scr = false;
             }
         });
