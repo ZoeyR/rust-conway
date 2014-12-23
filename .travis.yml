@@ -18,11 +18,11 @@ script:
 
 after_success: 
         - cd target/doc
-	- git init
-	- git config user.name "Daniel Griffen"
-	- git config user.email "daniel@dgriffen.com"
-	- git remote add origin "https://$GH_TOKEN@github.com/dgriffen/rust-conway"
-	- git checkout -b gh-pages
-	- git add -A
-	- git commit -m 'new docs'
-	- git push -fq origin gh-pages
+        - git init
+        - git config user.name "Daniel Griffen"
+        - git config user.email "daniel@dgriffen.com"
+        - git remote add origin "https://$GH_TOKEN@github.com/dgriffen/rust-conway"
+        - git checkout -b gh-pages
+        - git add -A
+        - git commit -m 'new docs'
+        - git push -fq origin gh-pages
