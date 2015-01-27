@@ -7,8 +7,8 @@ use world;
 ///track interesting areas in the world. Only cells adjacent to cells that updated during the last
 ///generation are evaluated for a new state
 pub struct GrifLife {
-    generation: uint,
-    updated: HashMap<(int, int), State>,
+    generation: usize,
+    updated: HashMap<(isize, isize), State>,
     world: Box<world::World + 'static>
 }
 
@@ -25,7 +25,7 @@ pub trait ConwayEngine {
     fn world_ref_mut<'w>(&'w mut self) -> &'w mut world::World;
 
     ///Correct way to set the cell in the engine so we can know about the addition
-    fn set_cell(&mut self, x: int, y: int);
+    fn set_cell(&mut self, x: isize, y: isize);
 }
 
 
@@ -40,8 +40,8 @@ impl ConwayEngine for GrifLife {
         for (location, _) in self.updated.iter() {
             let (x, y) = *location;
             //check for new states on all adjacent cells
-            for i in range(-1i, 2i) {
-                for j in range(-1i, 2i) {
+            for i in range(-1is, 2is) {
+                for j in range(-1is, 2is) {
                     
                     //if this cell hasn't been checked already
                     if checked_map.get(&(x - i, y - j)) == None {
@@ -81,7 +81,7 @@ impl ConwayEngine for GrifLife {
         &mut *self.world
     }
 
-    fn set_cell(&mut self, x: int, y: int) {
+    fn set_cell(&mut self, x: isize, y: isize) {
         self.updated.insert((x, y), State::Alive);
         self.world.set_cell(x, y);
     }
@@ -100,7 +100,7 @@ impl GrifLife {
     }
 
     //calculate the new cell state
-    fn new_state(&self, cell: (State, (int, int))) -> State {
+    fn new_state(&self, cell: (State, (isize, isize))) -> State {
         let (state, (x, y)) = cell;
 
         //count the surrounding cells

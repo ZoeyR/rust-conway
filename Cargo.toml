@@ -24,3 +24,15 @@ git = "https://github.com/PistonDevelopers/opengl_graphics"
 [dependencies.pistoncore-event]
 
 git = "https://github.com/PistonDevelopers/event"
+
+[dependencies.pistoncore-input]
+
+git = "https://github.com/PistonDevelopers/input"
+
+[dependencies.current]
+
+git = "https://github.com/PistonDevelopers/current"
+
+[dependencies.quack]
+
+git = "https://github.com/PistonDevelopers/quack"

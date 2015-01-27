@@ -1,11 +1,10 @@
-#![feature(globs)]
-
 extern crate graphics;
 extern crate sdl2_window;
 extern crate shader_version;
 extern crate opengl_graphics;
 extern crate event;
-extern crate sdl2;
+extern crate quack;
+//extern crate sdl2;
 
 
 extern crate input;
@@ -17,7 +16,7 @@ use event::{
     MaxFps,
     WindowSettings
 };
-use current::Set;
+use quack::Set;
 use sdl2_window::Sdl2Window;
 use opengl_graphics::Gl;
 use engine::ConwayEngine;
@@ -58,20 +57,21 @@ fn main() {
     world.set_cell(1, 2);
     world.set_cell(2, 2);
 
-    let mut engine = engine::GrifLife::new(box world);
+    let mut engine = engine::GrifLife::new(Box::new(world));
 
     let mut draw = false;
     let mut run = false;
     //number of generations per second, cannot exceed updates_per_second
-    let gen_speed = 50i;
-    let mut updates_since_gen = 0i;
+    let gen_speed = 50is;
+    let mut updates_since_gen = 0is;
 
     let mut move_scr = false;
-    for e in Events::new(&RefCell::new(window)).set(Ups(120)).set(MaxFps(60)) {
+    let ref_window = RefCell::new(window);//.set(Ups(120)).set(MaxFps(60));
+    for e in event::events(&ref_window).set(Ups(10)) {
         use event::{ RenderEvent, MouseCursorEvent, MouseRelativeEvent, MouseScrollEvent, PressEvent, ReleaseEvent, UpdateEvent};
-        e.render(|args| {
+        if let Some(args) = e.render_args() {
             gl.draw([0, 0, args.width as i32, args.height as i32], |c, gl| {
-                graphics::clear([1.0, ..4], gl);
+                graphics::clear([1.0; 4], gl);
 
                 for (location, cell) in engine.world_ref().iter() {
                     let (state, (x, y)) = (*cell, *location);
@@ -80,9 +80,9 @@ fn main() {
                     }
                 }
             });
-        });
+        }
 
-        e.press(|button| {
+        if let Some(button) = e.press_args() {
             if button == input::Button::Mouse(input::mouse::MouseButton::Left) {
                 draw = true;
             }
@@ -92,16 +92,16 @@ fn main() {
             if button == input::Button::Mouse(input::mouse::MouseButton::Right) {
                 move_scr = true;
             }
-        });
+        }
 
-        e.release(|button| {
+        if let Some(button) = e.release_args() {
             if button == input::Button::Mouse(input::mouse::MouseButton::Left) {
                 draw = false;
             }
             if button == input::Button::Mouse(input::mouse::MouseButton::Right) {
                 move_scr = false;
             }
-        });
+        }
         
         e.update(|_| {
             updates_since_gen += 1;
@@ -130,7 +130,7 @@ fn main() {
         }
 
         if draw {
-            e.mouse_cursor(|x, y| {
+            if let Some([x, y]) = e.mouse_cursor_args() {
                 let (mut x,mut y) = ((x + view.offx) / view.scale, (y + view.offy) / view.scale);
                 if x < 0.0 {
                     x -= 1.0;
@@ -138,8 +138,8 @@ fn main() {
                 if y < 0.0 {
                     y -= 1.0;
                 }
-                engine.set_cell(x as int, y as int);
-            });
+                engine.set_cell(x as isize, y as isize);
+            }
         }
     }
     
